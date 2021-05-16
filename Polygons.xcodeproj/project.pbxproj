@@ -8,6 +8,14 @@
 
 /* Begin PBXBuildFile section */
 		AEAC0D2C264C207200F937B4 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AEAC0D2B264C207200F937B4 /* main.cpp */; };
+		AECBE05C2650BBE200EDDA54 /* Card.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AECBE05B2650BBE200EDDA54 /* Card.cpp */; };
+		AECBE05F2650BD2F00EDDA54 /* Player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AECBE05E2650BD2F00EDDA54 /* Player.cpp */; };
+		AECBE0622650BE1000EDDA54 /* Team.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AECBE0612650BE1000EDDA54 /* Team.cpp */; };
+		AED970BF264F9B4000C60C39 /* libsfml-window.2.5.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AED970BA264F9B4000C60C39 /* libsfml-window.2.5.1.dylib */; };
+		AED970C0264F9B4000C60C39 /* libsfml-audio.2.5.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AED970BB264F9B4000C60C39 /* libsfml-audio.2.5.1.dylib */; };
+		AED970C1264F9B4000C60C39 /* libsfml-network.2.5.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AED970BC264F9B4000C60C39 /* libsfml-network.2.5.1.dylib */; };
+		AED970C2264F9B4100C60C39 /* libsfml-graphics.2.5.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AED970BD264F9B4000C60C39 /* libsfml-graphics.2.5.1.dylib */; };
+		AED970C3264F9B4100C60C39 /* libsfml-system.2.5.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AED970BE264F9B4000C60C39 /* libsfml-system.2.5.1.dylib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,6 +33,18 @@
 /* Begin PBXFileReference section */
 		AEAC0D28264C207200F937B4 /* Polygons */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Polygons; sourceTree = BUILT_PRODUCTS_DIR; };
 		AEAC0D2B264C207200F937B4 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		AECBE0582650BA9400EDDA54 /* Card.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Card.h; sourceTree = "<group>"; };
+		AECBE0592650BB0800EDDA54 /* Player.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Player.h; sourceTree = "<group>"; };
+		AECBE05A2650BB3A00EDDA54 /* Team.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Team.h; sourceTree = "<group>"; };
+		AECBE05B2650BBE200EDDA54 /* Card.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Card.cpp; sourceTree = "<group>"; };
+		AECBE05D2650BCBD00EDDA54 /* Game.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Game.h; sourceTree = "<group>"; };
+		AECBE05E2650BD2F00EDDA54 /* Player.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Player.cpp; sourceTree = "<group>"; };
+		AECBE0612650BE1000EDDA54 /* Team.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Team.cpp; sourceTree = "<group>"; };
+		AED970BA264F9B4000C60C39 /* libsfml-window.2.5.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libsfml-window.2.5.1.dylib"; path = "SFML/lib/libsfml-window.2.5.1.dylib"; sourceTree = "<group>"; };
+		AED970BB264F9B4000C60C39 /* libsfml-audio.2.5.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libsfml-audio.2.5.1.dylib"; path = "SFML/lib/libsfml-audio.2.5.1.dylib"; sourceTree = "<group>"; };
+		AED970BC264F9B4000C60C39 /* libsfml-network.2.5.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libsfml-network.2.5.1.dylib"; path = "SFML/lib/libsfml-network.2.5.1.dylib"; sourceTree = "<group>"; };
+		AED970BD264F9B4000C60C39 /* libsfml-graphics.2.5.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libsfml-graphics.2.5.1.dylib"; path = "SFML/lib/libsfml-graphics.2.5.1.dylib"; sourceTree = "<group>"; };
+		AED970BE264F9B4000C60C39 /* libsfml-system.2.5.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libsfml-system.2.5.1.dylib"; path = "SFML/lib/libsfml-system.2.5.1.dylib"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -32,6 +52,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AED970BF264F9B4000C60C39 /* libsfml-window.2.5.1.dylib in Frameworks */,
+				AED970C0264F9B4000C60C39 /* libsfml-audio.2.5.1.dylib in Frameworks */,
+				AED970C1264F9B4000C60C39 /* libsfml-network.2.5.1.dylib in Frameworks */,
+				AED970C2264F9B4100C60C39 /* libsfml-graphics.2.5.1.dylib in Frameworks */,
+				AED970C3264F9B4100C60C39 /* libsfml-system.2.5.1.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -43,6 +68,7 @@
 			children = (
 				AEAC0D2A264C207200F937B4 /* Polygons */,
 				AEAC0D29264C207200F937B4 /* Products */,
+				AED970B9264F9B4000C60C39 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -58,8 +84,27 @@
 			isa = PBXGroup;
 			children = (
 				AEAC0D2B264C207200F937B4 /* main.cpp */,
+				AECBE0582650BA9400EDDA54 /* Card.h */,
+				AECBE0592650BB0800EDDA54 /* Player.h */,
+				AECBE05A2650BB3A00EDDA54 /* Team.h */,
+				AECBE05B2650BBE200EDDA54 /* Card.cpp */,
+				AECBE05D2650BCBD00EDDA54 /* Game.h */,
+				AECBE05E2650BD2F00EDDA54 /* Player.cpp */,
+				AECBE0612650BE1000EDDA54 /* Team.cpp */,
 			);
 			path = Polygons;
+			sourceTree = "<group>";
+		};
+		AED970B9264F9B4000C60C39 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				AED970BB264F9B4000C60C39 /* libsfml-audio.2.5.1.dylib */,
+				AED970BD264F9B4000C60C39 /* libsfml-graphics.2.5.1.dylib */,
+				AED970BC264F9B4000C60C39 /* libsfml-network.2.5.1.dylib */,
+				AED970BE264F9B4000C60C39 /* libsfml-system.2.5.1.dylib */,
+				AED970BA264F9B4000C60C39 /* libsfml-window.2.5.1.dylib */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -119,7 +164,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AECBE0622650BE1000EDDA54 /* Team.cpp in Sources */,
 				AEAC0D2C264C207200F937B4 /* main.cpp in Sources */,
+				AECBE05C2650BBE200EDDA54 /* Card.cpp in Sources */,
+				AECBE05F2650BD2F00EDDA54 /* Player.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -176,6 +224,8 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "\"${SRCROOT}/../SFML/include\"";
+				LIBRARY_SEARCH_PATHS = "\"${SRCROOT}/../SFML/lib\"";
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -228,6 +278,8 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "\"${SRCROOT}/../SFML/include\"";
+				LIBRARY_SEARCH_PATHS = "\"${SRCROOT}/../SFML/lib\"";
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
@@ -241,6 +293,11 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 4F8QLTD2F3;
 				ENABLE_HARDENED_RUNTIME = YES;
+				HEADER_SEARCH_PATHS = "\"${SRCROOT}/SFML/include\"";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/SFML/lib",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -251,6 +308,11 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 4F8QLTD2F3;
 				ENABLE_HARDENED_RUNTIME = YES;
+				HEADER_SEARCH_PATHS = "\"${SRCROOT}/SFML/include\"";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/SFML/lib",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
