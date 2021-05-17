@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:Polygons.xcodeproj">
+      location = "self:/Users/italoricardogeske/Polygons/Truco.xcodeproj">
    </FileRef>
 </Workspace>

@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "AEAC0D27264C207200F937B4"
-               BuildableName = "Polygons"
-               BlueprintName = "Polygons"
-               ReferencedContainer = "container:Polygons.xcodeproj">
+               BuildableName = "Truco"
+               BlueprintName = "Truco"
+               ReferencedContainer = "container:Truco.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -46,9 +46,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "AEAC0D27264C207200F937B4"
-            BuildableName = "Polygons"
-            BlueprintName = "Polygons"
-            ReferencedContainer = "container:Polygons.xcodeproj">
+            BuildableName = "Truco"
+            BlueprintName = "Truco"
+            ReferencedContainer = "container:Truco.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -63,9 +63,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "AEAC0D27264C207200F937B4"
-            BuildableName = "Polygons"
-            BlueprintName = "Polygons"
-            ReferencedContainer = "container:Polygons.xcodeproj">
+            BuildableName = "Truco"
+            BlueprintName = "Truco"
+            ReferencedContainer = "container:Truco.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

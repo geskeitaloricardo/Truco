@@ -138,49 +138,49 @@ int main()
     
     std::shuffle(allCards, allCards + noAllCards, std::default_random_engine(0));
     
-    // Make players
     std::string playerNames[noPlayers] = { "Pedro", "Lucas", "Osvaldo", playerName };
-    int alreadySelectedCards[noPlayers * cardsPerPlayer];
-    int cardCounter = 0;
-    Player players[noPlayers];
-    for (int i = 0; i < noPlayers; i++) {
-        bool isPlayer = playerNames[i] == playerName;
-        Card handCards[cardsPerPlayer];
-        for (int j = 0; j < cardsPerPlayer; j++) {
-            int randIndex = rand() % noAllCards;
-            while (isAlreadySelected(alreadySelectedCards, noPlayers * cardsPerPlayer, randIndex)) {
-                randIndex = rand() % noAllCards;
-            }
-            alreadySelectedCards[cardCounter] = randIndex;
-            handCards[j] = allCards[randIndex];
-            cardCounter++;
-        }
-        players[i] = Player(playerNames[i], handCards, isPlayer);
-    }
-    
-    // Make teams
     std::string teamNames[noTeams] = { "A Team", "B Team" };
+    int alreadySelectedCards[noPlayers * cardsPerPlayer];
     int alreadySelectedPlayers[noTeams * membersPerTeam] = {-1, -1, -1, -1};
-    int playerCount = 0;
+    int playersCount = 0;
+    int cardsCounter = 0;
+    // Teams Loop
     Team teams[noTeams];
-    for (int i = 0; i < noTeams; i++) {
-        Player teamPlayers[membersPerTeam];
+    for (int teamIndex = 0; teamIndex < noTeams; teamIndex++) {
+        // Players Loop
+        Player players[noTeams][membersPerTeam];
         bool isPlayerTeam = false;
-        for (int j = 0; j < membersPerTeam; j++) {
+        for (int playerIndex = 0; playerIndex < membersPerTeam; playerIndex++) {
+            // Cards Loop
+            Card handCards[cardsPerPlayer];
+            for (int cardIndex = 0; cardIndex < cardsPerPlayer; cardIndex++) {
+                // Select unique card from cards
+                int randIndex = rand() % noAllCards;
+                while (isAlreadySelected(alreadySelectedCards, noPlayers * cardsPerPlayer, randIndex)) {
+                    randIndex = rand() % noAllCards;
+                }
+                
+                // Card Assign
+                alreadySelectedCards[cardsCounter] = randIndex;
+                handCards[cardIndex] = allCards[randIndex];
+                cardsCounter++;
+            }
+            
+            // Select unique user from users
             int randIndex = rand() % noPlayers;
-            while (isAlreadySelected(alreadySelectedPlayers, noTeams * membersPerTeam, randIndex)) {
+            while (isAlreadySelected(alreadySelectedPlayers, noPlayers, randIndex)) {
                 randIndex = rand() % noPlayers;
             }
             
-            alreadySelectedPlayers[playerCount] = randIndex;
-            teamPlayers[j] = players[randIndex];
+            // Player Assign
+            alreadySelectedPlayers[playersCount] = randIndex;
+            players[teamIndex][playerIndex] = Player(playerNames[randIndex], handCards, playerNames[randIndex] == playerName);;
             if (!isPlayerTeam) {
-                isPlayerTeam = players[randIndex].IsPlayer();
+                isPlayerTeam = players[teamIndex][randIndex].IsPlayer();
             }
-            playerCount++;
+            playersCount++;
         }
-        
-        teams[i] = Team(teamNames[i], teamPlayers, isPlayerTeam);
+        teams[teamIndex] = Team(teamNames[teamIndex], players[teamIndex], isPlayerTeam);
     }
 
     while (window.isOpen())

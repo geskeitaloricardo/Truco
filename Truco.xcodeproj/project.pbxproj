@@ -31,7 +31,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		AEAC0D28264C207200F937B4 /* Polygons */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Polygons; sourceTree = BUILT_PRODUCTS_DIR; };
+		AEAC0D28264C207200F937B4 /* Truco */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Truco; sourceTree = BUILT_PRODUCTS_DIR; };
 		AEAC0D2B264C207200F937B4 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		AECBE0582650BA9400EDDA54 /* Card.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Card.h; sourceTree = "<group>"; };
 		AECBE0592650BB0800EDDA54 /* Player.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Player.h; sourceTree = "<group>"; };
@@ -66,7 +66,7 @@
 		AEAC0D1F264C207200F937B4 = {
 			isa = PBXGroup;
 			children = (
-				AEAC0D2A264C207200F937B4 /* Polygons */,
+				AEAC0D2A264C207200F937B4 /* Truco */,
 				AEAC0D29264C207200F937B4 /* Products */,
 				AED970B9264F9B4000C60C39 /* Frameworks */,
 			);
@@ -75,12 +75,12 @@
 		AEAC0D29264C207200F937B4 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				AEAC0D28264C207200F937B4 /* Polygons */,
+				AEAC0D28264C207200F937B4 /* Truco */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		AEAC0D2A264C207200F937B4 /* Polygons */ = {
+		AEAC0D2A264C207200F937B4 /* Truco */ = {
 			isa = PBXGroup;
 			children = (
 				AEAC0D2B264C207200F937B4 /* main.cpp */,
@@ -92,7 +92,7 @@
 				AECBE05E2650BD2F00EDDA54 /* Player.cpp */,
 				AECBE0612650BE1000EDDA54 /* Team.cpp */,
 			);
-			path = Polygons;
+			path = Truco;
 			sourceTree = "<group>";
 		};
 		AED970B9264F9B4000C60C39 /* Frameworks */ = {
@@ -110,9 +110,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		AEAC0D27264C207200F937B4 /* Polygons */ = {
+		AEAC0D27264C207200F937B4 /* Truco */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = AEAC0D2F264C207200F937B4 /* Build configuration list for PBXNativeTarget "Polygons" */;
+			buildConfigurationList = AEAC0D2F264C207200F937B4 /* Build configuration list for PBXNativeTarget "Truco" */;
 			buildPhases = (
 				AEAC0D24264C207200F937B4 /* Sources */,
 				AEAC0D25264C207200F937B4 /* Frameworks */,
@@ -122,9 +122,9 @@
 			);
 			dependencies = (
 			);
-			name = Polygons;
+			name = Truco;
 			productName = Polygons;
-			productReference = AEAC0D28264C207200F937B4 /* Polygons */;
+			productReference = AEAC0D28264C207200F937B4 /* Truco */;
 			productType = "com.apple.product-type.tool";
 		};
 /* End PBXNativeTarget section */
@@ -141,7 +141,7 @@
 					};
 				};
 			};
-			buildConfigurationList = AEAC0D23264C207200F937B4 /* Build configuration list for PBXProject "Polygons" */;
+			buildConfigurationList = AEAC0D23264C207200F937B4 /* Build configuration list for PBXProject "Truco" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -154,7 +154,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				AEAC0D27264C207200F937B4 /* Polygons */,
+				AEAC0D27264C207200F937B4 /* Truco */,
 			);
 		};
 /* End PBXProject section */
@@ -320,7 +320,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		AEAC0D23264C207200F937B4 /* Build configuration list for PBXProject "Polygons" */ = {
+		AEAC0D23264C207200F937B4 /* Build configuration list for PBXProject "Truco" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				AEAC0D2D264C207200F937B4 /* Debug */,
@@ -329,7 +329,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		AEAC0D2F264C207200F937B4 /* Build configuration list for PBXNativeTarget "Polygons" */ = {
+		AEAC0D2F264C207200F937B4 /* Build configuration list for PBXNativeTarget "Truco" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				AEAC0D30264C207200F937B4 /* Debug */,
