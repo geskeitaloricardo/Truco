@@ -22,8 +22,9 @@ private:
     bool isPlayer = false;
 public:
     Player();
-    Player (std::string name, Card cards[], bool isPlayer = false);
+    Player (std::string name,bool isPlayer = false);
     Card GetCard(int index);
+    void SetCards(Card cards[]);
     std::string GetName();
     bool IsPlayer();
 };

@@ -6,6 +6,8 @@
 //  Copyright © 2021 Italo Ricardo Geske. All rights reserved.
 //
 
+#include <SFML/Graphics.hpp>
+
 #ifndef Game_h
 #define Game_h
 
@@ -15,11 +17,15 @@
 
 #define cardWidth 691
 #define cardHeight 1056
+#define cardWidthScale 0.5f
+#define cardHeightScale 0.5f
 
 #define totalPlayers 4
 #define membersPerTeam 2
 #define noTeams 2
 
 #define playerName "You"
+
+extern sf::IntRect CardRect;
 
 #endif /* Game_h */

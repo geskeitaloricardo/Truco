@@ -12,21 +12,28 @@
 
 Player::Player() {
     name = "";
-};
-Player::Player (std::string name, Card cards[], bool isPlayer) {
+}
+
+Player::Player (std::string name, bool isPlayer) {
     this->name = name;
-    for (int i = 0; i < cardsPerPlayer; i++) {
-        this->cards[i] = cards[i];
-    }
     this->isPlayer = isPlayer;
 }
+
 Card Player::GetCard(int index) {
 //      TODO: 実際に外したいな
     return cards[index];
 }
+
+void Player::SetCards(Card cards[]) {
+    for (int i = 0; i < cardsPerPlayer; i++) {
+        this->cards[i] = cards[i];
+    }
+}
+
 std::string Player::GetName() {
     return name;
 }
+
 bool Player::IsPlayer() {
     return isPlayer;
 }

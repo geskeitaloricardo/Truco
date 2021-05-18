@@ -7,7 +7,7 @@
 //
 
 #include <string>
-
+#include <iostream>
 #include "Card.h"
 
 Card::Card() {
@@ -47,12 +47,4 @@ std::string Card::GetSuitString() {
 
 std::string Card::GetSourceDirectory() {
     return sourceDirectory;
-}
-
-sf::Vector2f Card::GetCoordinates() {
-    return coordinates;
-}
-
-void Card::SetCoordinates(sf::Vector2f coordinates) {
-    this->coordinates = coordinates;
 }

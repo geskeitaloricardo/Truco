@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AE0809EC2653EE150028F3EE /* Game.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AE0809EB2653EE150028F3EE /* Game.cpp */; };
 		AEAC0D2C264C207200F937B4 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AEAC0D2B264C207200F937B4 /* main.cpp */; };
 		AECBE05C2650BBE200EDDA54 /* Card.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AECBE05B2650BBE200EDDA54 /* Card.cpp */; };
 		AECBE05F2650BD2F00EDDA54 /* Player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AECBE05E2650BD2F00EDDA54 /* Player.cpp */; };
@@ -31,6 +32,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		AE0809EB2653EE150028F3EE /* Game.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Game.cpp; sourceTree = "<group>"; };
 		AEAC0D28264C207200F937B4 /* Truco */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Truco; sourceTree = BUILT_PRODUCTS_DIR; };
 		AEAC0D2B264C207200F937B4 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		AECBE0582650BA9400EDDA54 /* Card.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Card.h; sourceTree = "<group>"; };
@@ -91,6 +93,7 @@
 				AECBE05D2650BCBD00EDDA54 /* Game.h */,
 				AECBE05E2650BD2F00EDDA54 /* Player.cpp */,
 				AECBE0612650BE1000EDDA54 /* Team.cpp */,
+				AE0809EB2653EE150028F3EE /* Game.cpp */,
 			);
 			path = Truco;
 			sourceTree = "<group>";
@@ -168,6 +171,7 @@
 				AEAC0D2C264C207200F937B4 /* main.cpp in Sources */,
 				AECBE05C2650BBE200EDDA54 /* Card.cpp in Sources */,
 				AECBE05F2650BD2F00EDDA54 /* Player.cpp in Sources */,
+				AE0809EC2653EE150028F3EE /* Game.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

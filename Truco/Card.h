@@ -6,10 +6,10 @@
 //  Copyright © 2021 Italo Ricardo Geske. All rights reserved.
 //
 
+#include "Game.h"
+
 #ifndef Card_h
 #define Card_h
-
-#include <SFML/Graphics.hpp>
 
 enum Suit
 {
@@ -26,16 +26,18 @@ private:
     int number;
     Suit suit;
     std::string sourceDirectory;
-    sf::Vector2f coordinates;
 public:
+    sf::Sprite sprite;
+    sf::Texture texture;
+    
     Card();
     Card(int number, Suit suit, std::string sourceDirectory);
     int GetNumber();
     Suit GetSuit();
     std::string GetSuitString();
     std::string GetSourceDirectory();
-    sf::Vector2f GetCoordinates();
-    void SetCoordinates(sf::Vector2f coordinates);
+    void LoadGraphics();
+    void LoadGraphics(std::string sourceDirectory);
 };
 
 
