@@ -16,20 +16,13 @@ Team::Team() {
     name = "";
 }
 
-Team::Team (std::string name, Player players[], bool isPlayerTeam) {
+Team::Team (std::string name, bool isPlayerTeam) {
     this->name = name;
-    for (int i = 0; i < membersPerTeam; i++) {
-        this->players[i] = players[i];
-    }
     this->isPlayerTeam = isPlayerTeam;
 }
 
 std::string Team::GetName() {
     return name;
-}
-
-Player Team::GetPlayer(int index) {
-    return players[index];
 }
 
 bool Team::IsPlayerTeam() {

@@ -15,13 +15,11 @@ class Team
 {
 private:
     std::string name;
-    Player players[membersPerTeam];
     bool isPlayerTeam = false;
 public:
     Team();
-    Team (std::string name, Player players[], bool isPlayerTeam = false);
+    Team (std::string name, bool isPlayerTeam = false);
     std::string GetName();
-    Player GetPlayer(int index);
     bool IsPlayerTeam();
 };
 

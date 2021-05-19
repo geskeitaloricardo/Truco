@@ -50,6 +50,9 @@ int main()
     
     std::shuffle(allCards, allCards + noAllCards, std::default_random_engine(0));
     
+    float screenWidth = sf::VideoMode::getDesktopMode().width;
+    float screenHeight = sf::VideoMode::getDesktopMode().height;
+    
     std::string playerNames[noPlayers] = { "Pedro", "Lucas", "Osvaldo", playerName };
     std::string teamNames[noTeams] = { "A Team", "B Team" };
     int alreadySelectedCards[noPlayers * cardsPerPlayer];
@@ -59,10 +62,16 @@ int main()
     // Teams Loop
     Team teams[noTeams];
     Player players[noTeams][membersPerTeam];
-    Card handCards[cardsPerPlayer];
-    sf::Texture backCardTexture;
-    backCardTexture.loadFromFile("cards/yellow_back.png", CardRect);
-    backCardTexture.setSmooth(true);
+    Card handCards[noTeams][membersPerTeam][cardsPerPlayer];
+    
+    sf::Texture opponentBackCardTexture;
+    opponentBackCardTexture.loadFromFile("cards/yellow_back.png", CardRect);
+    opponentBackCardTexture.setSmooth(true);
+    
+    sf::Texture partnerBackCardTexture;
+    partnerBackCardTexture.loadFromFile("cards/red_back.png", CardRect);
+    partnerBackCardTexture.setSmooth(true);
+    
     for (int teamIndex = 0; teamIndex < noTeams; teamIndex++) {
         // Players Loop
         bool isPlayerTeam = false;
@@ -86,28 +95,57 @@ int main()
                 }
                 // Card Assign
                 alreadySelectedCards[cardsCounter] = randCardIndex;
-                handCards[cardIndex] = allCards[randCardIndex];
+                handCards[teamIndex][playerIndex][cardIndex] = allCards[randCardIndex];
                 // Load Texture and sprite
+                handCards[teamIndex][playerIndex][cardIndex].texture.loadFromFile(handCards[teamIndex][playerIndex][cardIndex].GetSourceDirectory(), CardRect);
                 bool isPlayer = players[teamIndex][playerIndex].IsPlayer();
                 if (isPlayer) {
                     isPlayerTeam = true;
-                    handCards[cardIndex].texture.loadFromFile(handCards[cardIndex].GetSourceDirectory(), CardRect);
-                    handCards[cardIndex].sprite.setTexture(handCards[cardIndex].texture);
+                    handCards[teamIndex][playerIndex][cardIndex].sprite.setTexture(handCards[teamIndex][playerIndex][cardIndex].texture);
+                    if (playerIndex == 1) {
+                        // Partner card back has to be red
+                        handCards[teamIndex][0][cardIndex].sprite.setTexture(partnerBackCardTexture);
+                    }
                 } else {
-                    handCards[cardIndex].sprite.setTexture(backCardTexture);
+                    if (isPlayerTeam) {
+                        handCards[teamIndex][playerIndex][cardIndex].sprite.setTexture(partnerBackCardTexture);
+                    } else {
+                        handCards[teamIndex][playerIndex][cardIndex].sprite.setTexture(opponentBackCardTexture);
+                    }
                 }
-                handCards[cardIndex].sprite.scale(sf::Vector2f(cardWidthScale, cardHeightScale));
+                handCards[teamIndex][playerIndex][cardIndex].sprite.scale(sf::Vector2f(cardWidthScale, cardHeightScale));
                 cardsCounter++;
             }
-            players[teamIndex][playerIndex].SetCards(handCards);
         }
-        teams[teamIndex] = Team(teamNames[teamIndex], players[teamIndex], isPlayerTeam);
+        teams[teamIndex] = Team(teamNames[teamIndex], isPlayerTeam);
     }
+
+    // Under card
+    int randCardIndex = rand() % noAllCards;
+    while (isAlreadySelected(alreadySelectedCards, noPlayers * cardsPerPlayer, randCardIndex)) {
+        randCardIndex = rand() % noAllCards;
+    }
+    // Under Card Assign
+    alreadySelectedCards[cardsCounter] = randCardIndex;
+    Card underCard = allCards[randCardIndex];
+    underCard.texture.loadFromFile(underCard.GetSourceDirectory(), CardRect);
+    underCard.sprite.setTexture(underCard.texture);
+    underCard.sprite.scale(sf::Vector2f(cardWidthScale, cardHeightScale));
+    underCard.sprite.setPosition(sf::Vector2f((screenWidth / 3) - (cardWidth * cardWidthScale / 2), (screenHeight / 2) - (cardHeight * cardHeightScale / 2)));
+    underCard.sprite.setRotation(20);
+    cardsCounter++;
     
-    sf::Vector2f rectanglePosition = sf::Vector2f(720.f, 450.f);
-    sf::RectangleShape rectangle(rectanglePosition);
-    rectangle.setPosition((sf::VideoMode::getDesktopMode().width / 2) - rectanglePosition.x / 2, (sf::VideoMode::getDesktopMode().height / 2) - rectanglePosition.y / 2);
-    rectangle.setFillColor(sf::Color(255, 0, 0));
+    // Deck
+    sf::Sprite deckSprite;
+    deckSprite.setTexture(opponentBackCardTexture);
+    deckSprite.scale(sf::Vector2f(cardWidthScale, cardHeightScale));
+    deckSprite.setPosition(sf::Vector2f((screenWidth / 3) - (cardWidth * cardWidthScale / 2), (screenHeight / 2) - (cardHeight * cardHeightScale / 2)));
+    deckSprite.setRotation(-20.f);
+    
+    // Rectangle
+    sf::RectangleShape rectangle(sf::Vector2f(120.f, 50.f));
+    rectangle.setSize(sf::Vector2f(screenWidth / 2, screenHeight / 3));
+    rectangle.setPosition(screenWidth / 4, screenHeight / 3);
 
     while (window.isOpen())
     {
@@ -125,6 +163,8 @@ int main()
         window.clear(sf::Color::Green);
         
         window.draw(rectangle);
+        window.draw(underCard.sprite);
+        window.draw(deckSprite);
         
         // Loop teams
         for (int currTeamIndex = 0; currTeamIndex < noTeams; currTeamIndex++) {
@@ -134,14 +174,14 @@ int main()
                     Player currentPlayer = players[currTeamIndex][currTeamPlayerIndex];
                     // Loop team members cards
                     for (int currHandCardIndex = 0; currHandCardIndex < cardsPerPlayer; currHandCardIndex++) {
-                        Card currentCard = currentPlayer.GetCard(currHandCardIndex);
+                        Card currentCard = handCards[currTeamIndex][currTeamPlayerIndex][currHandCardIndex];
                         
                         if (currentTeam.IsPlayerTeam()) {
                             float cardY = 0;
                             
                             if (currentPlayer.IsPlayer()) {
-                                float cardX = (sf::VideoMode::getDesktopMode().width / 2) - (cardWidth * cardWidthScale / 2) * currHandCardIndex;
-                                float cardY = sf::VideoMode::getDesktopMode().height - (cardHeight * cardHeightScale);
+                                float cardX = (screenWidth / 2) - (cardWidth * cardWidthScale / 2) * currHandCardIndex;
+                                float cardY = screenHeight - (cardHeight * cardHeightScale);
                                 sf::Vector2f cardPosition = sf::Vector2f(cardX, cardY);
                                 currentCard.sprite.setPosition(cardPosition.x, cardPosition.y);
                                 if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
@@ -162,7 +202,6 @@ int main()
                                             cardSelected[currHandCardIndex] = currHandCardIndex;
                                         }
                                     }
-
                                     // Current selected card
                                     if (cardSelected[currHandCardIndex] != -1) {
                                         float posX = clickPosition.x - (cardWidth * 0.5f / 2);
@@ -172,21 +211,20 @@ int main()
                                         continue;
                                     }
                                 }
-
                                 // If not selected, set unselected
                                 cardSelected[currHandCardIndex] = -1;;
                                 window.draw(currentCard.sprite);
                                 continue;
                             }
                             // If member is same team, show cards with red back
-                            float cardX = (sf::VideoMode::getDesktopMode().width / 2) - (cardWidth * cardWidthScale / 2) * currHandCardIndex;
+                            float cardX = (screenWidth / 2) - (cardWidth * cardWidthScale / 2) * currHandCardIndex;
                             currentCard.sprite.setPosition(sf::Vector2f(cardX, cardY));
                             window.draw(currentCard.sprite);
                             continue;
                         }
                         // If not same team
-                        float cardX = currTeamPlayerIndex == 0 ? sf::VideoMode::getDesktopMode().width - (cardHeight * cardHeightScale) : 0;
-                        float cardY = ((sf::VideoMode::getDesktopMode().height / 2) - (cardWidth * cardWidthScale / 2) * currHandCardIndex) + 360.f;
+                        float cardX = currTeamPlayerIndex == 0 ? screenWidth - (cardHeight * cardHeightScale) : 0;
+                        float cardY = ((screenHeight / 2) - (cardWidth * cardWidthScale / 2) * currHandCardIndex) + 360.f;
                         currentCard.sprite.setPosition(sf::Vector2f(cardX, cardY));
                         currentCard.sprite.setRotation(-90.f);
                         window.draw(currentCard.sprite);

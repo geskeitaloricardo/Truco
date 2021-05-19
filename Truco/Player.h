@@ -18,13 +18,10 @@ class Player
 {
 private:
     std::string name;
-    Card cards[cardsPerPlayer];
     bool isPlayer = false;
 public:
     Player();
-    Player (std::string name,bool isPlayer = false);
-    Card GetCard(int index);
-    void SetCards(Card cards[]);
+    Player (std::string name, bool isPlayer = false);
     std::string GetName();
     bool IsPlayer();
 };
