@@ -61,10 +61,16 @@ int main()
     sf::Texture opponentBackCardTexture;
     opponentBackCardTexture.loadFromFile("cards/yellow_back.png", CardRect);
     opponentBackCardTexture.setSmooth(true);
+    sf::Sprite opponentBackCardSprite;
+    opponentBackCardSprite.setTexture(opponentBackCardTexture);
+    opponentBackCardSprite.scale(cardWidthScale, cardHeightScale);
     
     sf::Texture partnerBackCardTexture;
     partnerBackCardTexture.loadFromFile("cards/red_back.png", CardRect);
     partnerBackCardTexture.setSmooth(true);
+    sf::Sprite partnerBackCardSprite;
+    partnerBackCardSprite.setTexture(partnerBackCardTexture);
+    partnerBackCardSprite.scale(cardWidthScale, cardHeightScale);
     
     for (int teamIndex = 0; teamIndex < noTeams; teamIndex++) {
         // Players Loop
@@ -92,21 +98,10 @@ int main()
                 handCards[teamIndex][playerIndex][cardIndex] = allCards[randCardIndex];
                 // Load Texture and sprite
                 handCards[teamIndex][playerIndex][cardIndex].texture.loadFromFile(handCards[teamIndex][playerIndex][cardIndex].GetSourceDirectory(), CardRect);
-                bool isPlayer = players[teamIndex][playerIndex].IsPlayer();
-                if (isPlayer) {
+                if (players[teamIndex][playerIndex].IsPlayer()) {
                     isPlayerTeam = true;
-                    handCards[teamIndex][playerIndex][cardIndex].sprite.setTexture(handCards[teamIndex][playerIndex][cardIndex].texture);
-                    if (playerIndex == 1) {
-                        // Partner card back has to be red
-                        handCards[teamIndex][0][cardIndex].sprite.setTexture(partnerBackCardTexture);
-                    }
-                } else {
-                    if (isPlayerTeam) {
-                        handCards[teamIndex][playerIndex][cardIndex].sprite.setTexture(partnerBackCardTexture);
-                    } else {
-                        handCards[teamIndex][playerIndex][cardIndex].sprite.setTexture(opponentBackCardTexture);
-                    }
                 }
+                handCards[teamIndex][playerIndex][cardIndex].sprite.setTexture(handCards[teamIndex][playerIndex][cardIndex].texture);
                 handCards[teamIndex][playerIndex][cardIndex].sprite.scale(sf::Vector2f(cardWidthScale, cardHeightScale));
                 cardsCounter++;
             }
@@ -140,6 +135,11 @@ int main()
     sf::Vector2f rectangleSize = sf::Vector2f(screenWidth / 2, screenHeight / 3);
     sf::RectangleShape rectangle(rectangleSize);
     rectangle.setPosition(sf::Vector2f(screenWidth / 4, screenHeight / 3));
+    
+    // Logic
+    int currentTeamTurn = 0;
+    int currentPlayerTurn = 0;
+    int totalTurns = 0;
 
     while (window.isOpen())
     {
@@ -227,20 +227,44 @@ int main()
                                 continue;
                             }
                             // If member is same team, show cards with red back
+                            if (currentCard.GetState() != Table) {
+                                float cardX = (screenWidth / 2) - (cardWidth * cardWidthScale / 2) * currHandCardIndex;
+                                partnerBackCardSprite.setPosition(cardX, cardY);
+                                window.draw(partnerBackCardSprite);
+                                continue;
+                            }
+
                             float cardX = (screenWidth / 2) - (cardWidth * cardWidthScale / 2) * currHandCardIndex;
-                            currentCard.sprite.setPosition(sf::Vector2f(cardX, cardY));
-                            window.draw(currentCard.sprite);
+                            cardY = (screenHeight / 2) - (cardHeight * cardHeightScale / 2) * currHandCardIndex;
+                            window.draw(partnerBackCardSprite);
                             continue;
                         }
                         // If not same team
                         float cardX = currTeamPlayerIndex == 0 ? screenWidth - (cardHeight * cardHeightScale) : 0;
                         float cardY = ((screenHeight / 2) - (cardWidth * cardWidthScale / 2) * currHandCardIndex) + 360.f;
-                        currentCard.sprite.setPosition(sf::Vector2f(cardX, cardY));
-                        currentCard.sprite.setRotation(-90.f);
-                        window.draw(currentCard.sprite);
+                        opponentBackCardSprite.setPosition(sf::Vector2f(cardX, cardY));
+                        opponentBackCardSprite.setRotation(-90.f);
+                        window.draw(opponentBackCardSprite);
                     }
             }
         }
+        
+//        Player currentPlayer = players[currentTeamTurn][currentPlayerTurn];
+//        if (!currentPlayer.IsPlayer()) {
+//            // TODO: Logic
+//            for (int handCardIndex = 0; handCardIndex < cardsPerPlayer; handCardIndex++) {
+//                Card currentCard = handCards[currentTeamTurn][currentPlayerTurn][handCardIndex];
+//                if (currentCard.GetState() != Table) {
+//                    currentCard.SetState(Table);
+//                    break;
+//                }
+//            }
+//
+//            currentTeamTurn = currentTeamTurn < noTeams ? currentTeamTurn + 1 : 0;
+//            currentPlayerTurn = currentPlayerTurn < membersPerTeam ? currentPlayerTurn + 1 : 0;
+//        }
+        
+        
         window.display();
     }
 
