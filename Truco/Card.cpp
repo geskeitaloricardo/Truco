@@ -13,6 +13,7 @@
 Card::Card() {
     number = 0;
     suit = Suit::Unknown;
+    state = State::Still;
     sourceDirectory = "";
 };
 
@@ -28,6 +29,14 @@ int Card::GetNumber() {
 
 Suit Card::GetSuit() {
     return suit;
+}
+
+State Card::GetState() {
+    return state;
+}
+
+void Card::SetState(State state) {
+    this->state = state;
 }
 
 std::string Card::GetSuitString() {

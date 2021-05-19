@@ -20,11 +20,20 @@ enum Suit
     Clubs = 4
 };
 
+enum State
+{
+    Still,
+    Unselected,
+    Selected,
+    Table
+};
+
 class Card
 {
 private:
     int number;
     Suit suit;
+    State state;
     std::string sourceDirectory;
 public:
     sf::Sprite sprite;
@@ -34,6 +43,8 @@ public:
     Card(int number, Suit suit, std::string sourceDirectory);
     int GetNumber();
     Suit GetSuit();
+    State GetState();
+    void SetState(State state);
     std::string GetSuitString();
     std::string GetSourceDirectory();
     void LoadGraphics();

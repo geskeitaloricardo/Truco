@@ -10,8 +10,6 @@
 #include "Player.h"
 #include "Team.h"
 
-int cardSelected[cardsPerPlayer] = {-1, -1, -1};
-
 bool isAlreadySelected(int indexArr[], int arrSize, int targetIndex) {
     for (int i = 0; i < arrSize; i++) {
         if (indexArr[i] == targetIndex) {
@@ -180,45 +178,51 @@ int main()
                                 float defaultCardPosY = screenHeight - (cardHeight * cardHeightScale);
                                 
                                 // Reset position if not selected anymore
-                                if (cardSelected[currHandCardIndex] == -1) {
-                                    currentCard.sprite.setPosition(sf::Vector2f(defaultCardPosX, defaultCardPosY));
+                                if (currentCard.GetState() == Unselected) {
+                                    currentCard.sprite.setPosition(defaultCardPosX, defaultCardPosY);
+                                }
+                                
+                                if (currentCard.GetState() == Table) {
+                                    window.draw(currentCard.sprite);
                                 }
                                 
                                 // Drag card
-                                if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+                                if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && currentCard.GetState() != Table)
                                 {
                                     sf::Vector2i clickPosition = sf::Mouse::getPosition(window);
-                                    float originPos = currHandCardIndex == 2 ? currentCard.sprite.getPosition().x : currentCard.sprite.getPosition().x + (cardWidth * cardWidthScale / 2);
+                                    // If showing only half card, make just half card selectable
+                                    float originPos = (currHandCardIndex < cardsPerPlayer - 1 && handCards[currTeamIndex][currTeamPlayerIndex][currHandCardIndex + 1].GetState() == Table) || currHandCardIndex == cardsPerPlayer - 1 ? currentCard.sprite.getPosition().x : currentCard.sprite.getPosition().x + (cardWidth * cardWidthScale / 2);
                                     // Cards collision (user click)
                                     if (clickPosition.x >= originPos && clickPosition.x <= currentCard.sprite.getPosition().x + (cardWidth * cardWidthScale) &&
                                         clickPosition.y >= currentCard.sprite.getPosition().y && clickPosition.y <= currentCard.sprite.getPosition().y + cardHeight * cardHeightScale) {
                                         bool hasCardSelectedAlready = false;
                                         for (int selectedCardsIndex = 0; selectedCardsIndex < cardsPerPlayer; selectedCardsIndex++) {
-                                            if (cardSelected[selectedCardsIndex] != -1) {
+                                            if (handCards[currTeamIndex][currTeamPlayerIndex][selectedCardsIndex].GetState() == Selected) {
                                                 hasCardSelectedAlready = true;
                                             }
                                         }
                                         // If has any card selected, cannot select more than one
                                         if (!hasCardSelectedAlready) {
-                                            cardSelected[currHandCardIndex] = currHandCardIndex;
+                                            currentCard.SetState(Selected);
                                         }
                                     }
                                     // Current selected card
-                                    if (cardSelected[currHandCardIndex] != -1) {
+                                    if (currentCard.GetState() == Selected) {
                                         float posX = clickPosition.x - (cardWidth * cardWidthScale / 2);
                                         float posY = clickPosition.y - (cardHeight * cardHeightScale / 2);
-                                        currentCard.sprite.setPosition(sf::Vector2f(posX, posY));
+                                        currentCard.sprite.setPosition(posX, posY);
                                         window.draw(currentCard.sprite);
                                         continue;
                                     }
                                 }
                                 // If dropped inside area
                                 if (currentCard.sprite.getPosition().x >= rectangle.getPosition().x && currentCard.sprite.getPosition().x + (cardWidth * cardWidthScale) <= rectangle.getPosition().x + rectangleSize.x && currentCard.sprite.getPosition().y >= rectangle.getPosition().y && currentCard.sprite.getPosition().y + (cardWidth * cardWidthScale) <= rectangle.getPosition().y + rectangleSize.y) {
-                                    std::cout << "INSIDE" << std::endl;
+                                    currentCard.SetState(Table);
+                                    continue;
                                 }
                                 
                                 // If not selected, set unselected
-                                cardSelected[currHandCardIndex] = -1;;
+                                currentCard.SetState(Unselected);
                                 window.draw(currentCard.sprite);
                                 continue;
                             }
