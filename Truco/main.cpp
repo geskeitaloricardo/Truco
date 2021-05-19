@@ -22,10 +22,6 @@ bool isAlreadySelected(int indexArr[], int arrSize, int targetIndex) {
     return false;
 }
 
-void showContents(sf::RenderWindow* window, Team teams[]) {
-    
-}
-
 
 int main()
 {
@@ -143,9 +139,9 @@ int main()
     deckSprite.setRotation(-20.f);
     
     // Rectangle
-    sf::RectangleShape rectangle(sf::Vector2f(120.f, 50.f));
-    rectangle.setSize(sf::Vector2f(screenWidth / 2, screenHeight / 3));
-    rectangle.setPosition(screenWidth / 4, screenHeight / 3);
+    sf::Vector2f rectangleSize = sf::Vector2f(screenWidth / 2, screenHeight / 3);
+    sf::RectangleShape rectangle(rectangleSize);
+    rectangle.setPosition(sf::Vector2f(screenWidth / 4, screenHeight / 3));
 
     while (window.isOpen())
     {
@@ -174,23 +170,28 @@ int main()
                     Player currentPlayer = players[currTeamIndex][currTeamPlayerIndex];
                     // Loop team members cards
                     for (int currHandCardIndex = 0; currHandCardIndex < cardsPerPlayer; currHandCardIndex++) {
-                        Card currentCard = handCards[currTeamIndex][currTeamPlayerIndex][currHandCardIndex];
+                        Card& currentCard = handCards[currTeamIndex][currTeamPlayerIndex][currHandCardIndex];
                         
                         if (currentTeam.IsPlayerTeam()) {
                             float cardY = 0;
                             
                             if (currentPlayer.IsPlayer()) {
-                                float cardX = (screenWidth / 2) - (cardWidth * cardWidthScale / 2) * currHandCardIndex;
-                                float cardY = screenHeight - (cardHeight * cardHeightScale);
-                                sf::Vector2f cardPosition = sf::Vector2f(cardX, cardY);
-                                currentCard.sprite.setPosition(cardPosition.x, cardPosition.y);
+                                float defaultCardPosX = (screenWidth / 2) - (cardWidth * cardWidthScale / 2) * currHandCardIndex;
+                                float defaultCardPosY = screenHeight - (cardHeight * cardHeightScale);
+                                
+                                // Reset position if not selected anymore
+                                if (cardSelected[currHandCardIndex] == -1) {
+                                    currentCard.sprite.setPosition(sf::Vector2f(defaultCardPosX, defaultCardPosY));
+                                }
+                                
+                                // Drag card
                                 if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
                                 {
                                     sf::Vector2i clickPosition = sf::Mouse::getPosition(window);
-                                    float originPos = currHandCardIndex == 2 ? cardPosition.x : cardPosition.x + (cardWidth * 0.5f / 2);
+                                    float originPos = currHandCardIndex == 2 ? currentCard.sprite.getPosition().x : currentCard.sprite.getPosition().x + (cardWidth * cardWidthScale / 2);
                                     // Cards collision (user click)
-                                    if (clickPosition.x >= originPos && clickPosition.x <= cardPosition.x + (cardWidth * 0.5f) &&
-                                        clickPosition.y >= cardPosition.y && clickPosition.y <= cardPosition.y + cardHeight * 0.5f) {
+                                    if (clickPosition.x >= originPos && clickPosition.x <= currentCard.sprite.getPosition().x + (cardWidth * cardWidthScale) &&
+                                        clickPosition.y >= currentCard.sprite.getPosition().y && clickPosition.y <= currentCard.sprite.getPosition().y + cardHeight * cardHeightScale) {
                                         bool hasCardSelectedAlready = false;
                                         for (int selectedCardsIndex = 0; selectedCardsIndex < cardsPerPlayer; selectedCardsIndex++) {
                                             if (cardSelected[selectedCardsIndex] != -1) {
@@ -204,13 +205,18 @@ int main()
                                     }
                                     // Current selected card
                                     if (cardSelected[currHandCardIndex] != -1) {
-                                        float posX = clickPosition.x - (cardWidth * 0.5f / 2);
-                                        float posY = clickPosition.y - (cardHeight * 0.5f / 2);
+                                        float posX = clickPosition.x - (cardWidth * cardWidthScale / 2);
+                                        float posY = clickPosition.y - (cardHeight * cardHeightScale / 2);
                                         currentCard.sprite.setPosition(sf::Vector2f(posX, posY));
                                         window.draw(currentCard.sprite);
                                         continue;
                                     }
                                 }
+                                // If dropped inside area
+                                if (currentCard.sprite.getPosition().x >= rectangle.getPosition().x && currentCard.sprite.getPosition().x + (cardWidth * cardWidthScale) <= rectangle.getPosition().x + rectangleSize.x && currentCard.sprite.getPosition().y >= rectangle.getPosition().y && currentCard.sprite.getPosition().y + (cardWidth * cardWidthScale) <= rectangle.getPosition().y + rectangleSize.y) {
+                                    std::cout << "INSIDE" << std::endl;
+                                }
+                                
                                 // If not selected, set unselected
                                 cardSelected[currHandCardIndex] = -1;;
                                 window.draw(currentCard.sprite);
