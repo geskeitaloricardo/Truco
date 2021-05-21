@@ -20,6 +20,36 @@ bool isAlreadySelected(int indexArr[], int arrSize, int targetIndex) {
     return false;
 }
 
+void nextTurn(int &currentPlayerTurn, int &currentTeamTurn) {
+    std::cout << "Before Team Turn: " << currentTeamTurn << " Player Turn: " << currentPlayerTurn << std::endl;
+    
+    if (currentPlayerTurn == 0 && currentTeamTurn == 0) {
+        currentPlayerTurn = 0;
+        currentTeamTurn = 1;
+        return;
+    }
+    
+    if (currentPlayerTurn == 0 && currentTeamTurn == 1) {
+        currentPlayerTurn = 1;
+        currentTeamTurn = 1;
+        return;
+    }
+    
+    if (currentPlayerTurn == 1 && currentTeamTurn == 1) {
+        currentPlayerTurn = 1;
+        currentTeamTurn = 0;
+        return;
+    }
+    
+    if (currentPlayerTurn == 1 && currentTeamTurn == 0) {
+        currentPlayerTurn = 0;
+        currentTeamTurn = 0;
+        return;
+    }
+    
+    std::cout << "After Team Turn: " << currentTeamTurn << " Player Turn: " << currentPlayerTurn << std::endl;
+}
+
 
 int main()
 {
@@ -217,7 +247,10 @@ int main()
                                 }
                                 // If dropped inside area
                                 if (currentCard.sprite.getPosition().x >= rectangle.getPosition().x && currentCard.sprite.getPosition().x + (cardWidth * cardWidthScale) <= rectangle.getPosition().x + rectangleSize.x && currentCard.sprite.getPosition().y >= rectangle.getPosition().y && currentCard.sprite.getPosition().y + (cardWidth * cardWidthScale) <= rectangle.getPosition().y + rectangleSize.y) {
-                                    currentCard.SetState(Table);
+                                    if (currentCard.GetState() != Table) {
+                                        currentCard.SetState(Table);
+                                        nextTurn(currentPlayerTurn, currentTeamTurn);
+                                    }
                                     continue;
                                 }
                                 
@@ -234,37 +267,43 @@ int main()
                                 continue;
                             }
 
-                            float cardX = (screenWidth / 2) - (cardWidth * cardWidthScale / 2) * currHandCardIndex;
-                            cardY = (screenHeight / 2) - (cardHeight * cardHeightScale / 2) * currHandCardIndex;
-                            window.draw(partnerBackCardSprite);
+                            // If partner card is on table
+                            float cardX = (screenWidth / 2) - (cardWidth * cardWidthScale / 2);
+                            cardY = (screenHeight / 2) - (cardHeight * cardHeightScale / 2);
+                            currentCard.sprite.setPosition(cardX, cardY);
+                            window.draw(currentCard.sprite);
                             continue;
                         }
                         // If not same team
-                        float cardX = currTeamPlayerIndex == 0 ? screenWidth - (cardHeight * cardHeightScale) : 0;
-                        float cardY = ((screenHeight / 2) - (cardWidth * cardWidthScale / 2) * currHandCardIndex) + 360.f;
-                        opponentBackCardSprite.setPosition(sf::Vector2f(cardX, cardY));
-                        opponentBackCardSprite.setRotation(-90.f);
-                        window.draw(opponentBackCardSprite);
+                        if (currentCard.GetState() != Table) {
+                            float cardX = currTeamPlayerIndex == 0 ? screenWidth - (cardHeight * cardHeightScale) : 0;
+                            float cardY = ((screenHeight / 2) - (cardWidth * cardWidthScale / 2) * currHandCardIndex) + 360.f;
+                            opponentBackCardSprite.setPosition(sf::Vector2f(cardX, cardY));
+                            opponentBackCardSprite.setRotation(-90.f);
+                            window.draw(opponentBackCardSprite);
+                            continue;
+                        }
+                        
+                        float cardX = (screenWidth / 2) - (cardWidth * cardWidthScale / 2);
+                        float cardY = (screenHeight / 2) - (cardHeight * cardHeightScale / 2);
+                        currentCard.sprite.setPosition(cardX, cardY);
+                        window.draw(currentCard.sprite);
                     }
             }
         }
         
-//        Player currentPlayer = players[currentTeamTurn][currentPlayerTurn];
-//        if (!currentPlayer.IsPlayer()) {
-//            // TODO: Logic
-//            for (int handCardIndex = 0; handCardIndex < cardsPerPlayer; handCardIndex++) {
-//                Card currentCard = handCards[currentTeamTurn][currentPlayerTurn][handCardIndex];
-//                if (currentCard.GetState() != Table) {
-//                    currentCard.SetState(Table);
-//                    break;
-//                }
-//            }
-//
-//            currentTeamTurn = currentTeamTurn < noTeams ? currentTeamTurn + 1 : 0;
-//            currentPlayerTurn = currentPlayerTurn < membersPerTeam ? currentPlayerTurn + 1 : 0;
-//        }
-        
-        
+        Player currentPlayer = players[currentTeamTurn][currentPlayerTurn];
+        if (!currentPlayer.IsPlayer()) {
+            // TODO: Logic
+            for (int handCardIndex = 0; handCardIndex < cardsPerPlayer; handCardIndex++) {
+                Card& currentCard = handCards[currentTeamTurn][currentPlayerTurn][handCardIndex];
+                if (currentCard.GetState() != Table) {
+                    currentCard.SetState(Table);
+                    nextTurn(currentPlayerTurn, currentTeamTurn);
+                    break;
+                }
+            }
+        }
         window.display();
     }
 
