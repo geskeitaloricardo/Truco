@@ -55,6 +55,16 @@ int main()
 {
     sf::RenderWindow window(sf::VideoMode(2880, 1800), "Truco valendo o toba", sf::Style::Fullscreen);
     
+    float screenWidth = sf::VideoMode::getDesktopMode().width;
+    float screenHeight = sf::VideoMode::getDesktopMode().height;
+    
+    sf::Font font;
+    font.loadFromFile("fonts/arial.ttf");
+    sf::Text text;
+    text.setFont(font);
+    text.setCharacterSize(fontSize);
+    text.setFillColor(sf::Color::Red);
+    
     srand((unsigned)time(NULL));
     
     // Generate Cards
@@ -73,9 +83,6 @@ int main()
     
     
     std::shuffle(allCards, allCards + noAllCards, std::default_random_engine(0));
-    
-    float screenWidth = sf::VideoMode::getDesktopMode().width;
-    float screenHeight = sf::VideoMode::getDesktopMode().height;
     
     std::string playerNames[noPlayers] = { "Pedro", "Lucas", "Osvaldo", playerName };
     std::string teamNames[noTeams] = { "A Team", "B Team" };
@@ -183,6 +190,19 @@ int main()
                 if(event.key.code == sf::Keyboard::Escape)
                     window.close();
         }
+        
+        Player currentPlayer = players[currentTeamTurn][currentPlayerTurn];
+        if (!currentPlayer.IsPlayer()) {
+            // TODO: Logic
+            for (int handCardIndex = 0; handCardIndex < cardsPerPlayer; handCardIndex++) {
+                Card& currentCard = handCards[currentTeamTurn][currentPlayerTurn][handCardIndex];
+                if (currentCard.GetState() != Table) {
+                    currentCard.SetState(Table);
+                    nextTurn(currentPlayerTurn, currentTeamTurn);
+                    break;
+                }
+            }
+        }
 
         window.clear(sf::Color::Green);
         
@@ -190,11 +210,12 @@ int main()
         window.draw(underCard.sprite);
         window.draw(deckSprite);
         
+        
         // Loop teams
         for (int currTeamIndex = 0; currTeamIndex < noTeams; currTeamIndex++) {
             Team currentTeam = teams[currTeamIndex];
             // Loop team members
-            for (int currTeamPlayerIndex = 0; currTeamPlayerIndex < membersPerTeam; ++currTeamPlayerIndex) {
+            for (int currTeamPlayerIndex = 0; currTeamPlayerIndex < membersPerTeam; currTeamPlayerIndex++) {
                     Player currentPlayer = players[currTeamIndex][currTeamPlayerIndex];
                     // Loop team members cards
                     for (int currHandCardIndex = 0; currHandCardIndex < cardsPerPlayer; currHandCardIndex++) {
@@ -204,6 +225,10 @@ int main()
                             float cardY = 0;
                             
                             if (currentPlayer.IsPlayer()) {
+                                text.setPosition(screenWidth / 2 + (cardWidth * cardWidthScale), screenHeight - (cardHeight * cardHeightScale));
+                                text.setString(currentPlayer.GetName());
+                                window.draw(text);
+                                
                                 float defaultCardPosX = (screenWidth / 2) - (cardWidth * cardWidthScale / 2) * currHandCardIndex;
                                 float defaultCardPosY = screenHeight - (cardHeight * cardHeightScale);
                                 
@@ -259,6 +284,10 @@ int main()
                                 window.draw(currentCard.sprite);
                                 continue;
                             }
+                            text.setPosition((screenWidth / 2) - (cardWidth * cardWidthScale * 2), (cardHeight * cardHeightScale) - fontSize);
+                            text.setString(currentPlayer.GetName());
+                            window.draw(text);
+                            
                             // If member is same team, show cards with red back
                             if (currentCard.GetState() != Table) {
                                 float cardX = (screenWidth / 2) - (cardWidth * cardWidthScale / 2) * currHandCardIndex;
@@ -275,10 +304,15 @@ int main()
                             continue;
                         }
                         // If not same team
+                        float textX = currTeamPlayerIndex == 0 ? screenWidth - (cardHeight * cardHeightScale) : cardHeight * cardHeightScale / 2;
+                        float textY = currTeamPlayerIndex == 0 ? (screenHeight / 2) - (cardWidth * cardWidthScale) - fontSize : (screenHeight / 2) + (cardWidth * cardWidthScale);
+                        text.setPosition(textX, textY);
+                        text.setString(currentPlayer.GetName());
+                        window.draw(text);
                         if (currentCard.GetState() != Table) {
                             float cardX = currTeamPlayerIndex == 0 ? screenWidth - (cardHeight * cardHeightScale) : 0;
                             float cardY = ((screenHeight / 2) - (cardWidth * cardWidthScale / 2) * currHandCardIndex) + 360.f;
-                            opponentBackCardSprite.setPosition(sf::Vector2f(cardX, cardY));
+                            opponentBackCardSprite.setPosition(cardX, cardY);
                             opponentBackCardSprite.setRotation(-90.f);
                             window.draw(opponentBackCardSprite);
                             continue;
@@ -292,18 +326,6 @@ int main()
             }
         }
         
-        Player currentPlayer = players[currentTeamTurn][currentPlayerTurn];
-        if (!currentPlayer.IsPlayer()) {
-            // TODO: Logic
-            for (int handCardIndex = 0; handCardIndex < cardsPerPlayer; handCardIndex++) {
-                Card& currentCard = handCards[currentTeamTurn][currentPlayerTurn][handCardIndex];
-                if (currentCard.GetState() != Table) {
-                    currentCard.SetState(Table);
-                    nextTurn(currentPlayerTurn, currentTeamTurn);
-                    break;
-                }
-            }
-        }
         window.display();
     }
 

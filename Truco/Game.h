@@ -24,6 +24,8 @@
 #define membersPerTeam 2
 #define noTeams 2
 
+#define fontSize 70
+
 #define playerName "You"
 
 extern sf::IntRect CardRect;
