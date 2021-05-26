@@ -26,6 +26,13 @@
 
 #define fontSize 70
 
+#define playerTeamIndex 0
+#define rivalTeamIndex 1
+#define playerIndex 0
+#define partnerIndex 1
+#define rightSideRivalIndex 0
+#define leftSideRivalIndex 1
+
 #define playerName "You"
 
 extern sf::IntRect CardRect;
