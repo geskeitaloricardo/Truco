@@ -81,28 +81,26 @@ int main()
     Team teams[noTeams] { Team("A Team", true), Team("B Team") };
     
     Player players[noTeams][membersPerTeam] {
-        { Player("You"), Player("Pedro") },
+        { Player("You", true), Player("Pedro") },
         { Player("Lucas"), Player("Osvaldo") }
     };
     
     
     std::shuffle(allCards, allCards + noAllCards, std::default_random_engine(0));
     
-    int alreadySelectedCards[noPlayers * cardsPerPlayer];
+    int alreadySelectedCards[(noPlayers * cardsPerPlayer) + 1];
     int cardsCounter = 0;
     
     Card handCards[noTeams][membersPerTeam][cardsPerPlayer];
     
     sf::Texture opponentBackCardTexture;
     opponentBackCardTexture.loadFromFile("cards/yellow_back.png", CardRect);
-    opponentBackCardTexture.setSmooth(true);
     sf::Sprite opponentBackCardSprite;
     opponentBackCardSprite.setTexture(opponentBackCardTexture);
     opponentBackCardSprite.scale(cardWidthScale, cardHeightScale);
     
     sf::Texture partnerBackCardTexture;
     partnerBackCardTexture.loadFromFile("cards/red_back.png", CardRect);
-    partnerBackCardTexture.setSmooth(true);
     sf::Sprite partnerBackCardSprite;
     partnerBackCardSprite.setTexture(partnerBackCardTexture);
     partnerBackCardSprite.scale(cardWidthScale, cardHeightScale);
@@ -119,11 +117,11 @@ int main()
                 // Card Assign
                 alreadySelectedCards[cardsCounter] = randCardIndex;
                 handCards[teamIndex][pIndex][cardIndex] = allCards[randCardIndex];
+                cardsCounter++;
                 // Load Texture and sprite
                 handCards[teamIndex][pIndex][cardIndex].texture.loadFromFile(handCards[teamIndex][pIndex][cardIndex].GetSourceDirectory(), CardRect);
                 handCards[teamIndex][pIndex][cardIndex].sprite.setTexture(handCards[teamIndex][pIndex][cardIndex].texture);
                 handCards[teamIndex][pIndex][cardIndex].sprite.scale(cardWidthScale, cardHeightScale);
-                cardsCounter++;
             }
         }
     }
@@ -183,6 +181,8 @@ int main()
             Team currentTeam = teams[currTeamIndex];
             // Loop team members
             for (int currTeamPlayerIndex = 0; currTeamPlayerIndex < membersPerTeam; currTeamPlayerIndex++) {
+                Player currentPlayer = players[currTeamIndex][currTeamPlayerIndex];
+                std::string currentPlayerName = currentPlayer.GetName();
                 // Loop team members cards
                 for (int currHandCardIndex = 0; currHandCardIndex < cardsPerPlayer; currHandCardIndex++) {
                     Card& currentCard = handCards[currTeamIndex][currTeamPlayerIndex][currHandCardIndex];
@@ -192,7 +192,7 @@ int main()
                             switch (currTeamPlayerIndex) {
                                 case playerIndex: {
                                     text.setPosition(screenWidth / 2 + (cardWidth * cardWidthScale), screenHeight - (cardHeight * cardHeightScale));
-                                    text.setString(players[currTeamIndex][currTeamPlayerIndex].GetName());
+                                    text.setString(currentPlayerName);
                                     window.draw(text);
                                     
                                     float defaultCardPosX = (screenWidth / 2) - (cardWidth * cardWidthScale / 2) * currHandCardIndex;
@@ -253,7 +253,7 @@ int main()
                                 case partnerIndex: {
                                     float cardY = 0;
                                     text.setPosition((screenWidth / 2) - (cardWidth * cardWidthScale * 2), (cardHeight * cardHeightScale) - fontSize);
-                                    text.setString(players[currTeamIndex][currTeamPlayerIndex].GetName());
+                                    text.setString(currentPlayerName);
                                     window.draw(text);
                                     
                                     if (currentCard.GetState() != Table) {
@@ -280,7 +280,7 @@ int main()
                                     float textX = currTeamPlayerIndex == 0 ? screenWidth - (cardHeight * cardHeightScale) : cardHeight * cardHeightScale / 2;
                                     float textY = currTeamPlayerIndex == 0 ? (screenHeight / 2) - (cardWidth * cardWidthScale) - fontSize : (screenHeight / 2) + (cardWidth * cardWidthScale);
                                     text.setPosition(textX, textY);
-                                    text.setString(players[currTeamIndex][currTeamPlayerIndex].GetName());
+                                    text.setString(currentPlayerName);
                                     window.draw(text);
                                     if (currentCard.GetState() != Table) {
                                         float cardX = currTeamPlayerIndex == 0 ? screenWidth - (cardHeight * cardHeightScale) : 0;

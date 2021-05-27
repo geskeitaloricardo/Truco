@@ -14,19 +14,11 @@
 #include "Card.h"
 #include "Game.h"
 
-enum PlayerPosition {
-    Top,
-    Right,
-    Left,
-    Bottom
-};
-
 class Player
 {
 private:
     std::string name;
     bool isPlayer = false;
-    PlayerPosition playerPosition;
 public:
     Player();
     Player (std::string name, bool isPlayer = false);
