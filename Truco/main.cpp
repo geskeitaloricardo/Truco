@@ -20,7 +20,20 @@ bool isAlreadySelected(int indexArr[], int arrSize, int targetIndex) {
     return false;
 }
 
-void nextTurn(int &currentPlayerTurn, int &currentTeamTurn) {
+int cardsOnTable[noTeams][membersPerTeam][cardsPerPlayer] = {
+    {
+        { -1, -1, -1 },
+        { -1, -1, -1 },
+    },
+    {
+        { -1, -1, -1 },
+        { -1, -1, -1 }
+    }
+};
+
+void nextTurn(int &currentPlayerTurn, int &currentTeamTurn, int cardIndex) {
+    
+    cardsOnTable[currentTeamTurn][currentPlayerTurn][cardIndex] = 0;
     
     if (currentPlayerTurn == 0 && currentTeamTurn == 0) {
         currentPlayerTurn = 0;
@@ -43,6 +56,15 @@ void nextTurn(int &currentPlayerTurn, int &currentTeamTurn) {
     if (currentPlayerTurn == 1 && currentTeamTurn == 0) {
         currentPlayerTurn = 0;
         currentTeamTurn = 0;
+        for (int i = 0; i < noTeams; i++) {
+            for (int j = 0; j < membersPerTeam; j++) {
+                for (int k = 0; k < cardsPerPlayer; k++) {
+                    if (cardsOnTable[i][j][k] == 0) {
+                        cardsOnTable[i][j][k] = 1;
+                    }
+                }
+            }
+        }
         return;
     }
 }
@@ -204,7 +226,9 @@ int main()
                                     }
                                     
                                     if (currentCard.GetState() == Table) {
-                                        window.draw(currentCard.sprite);
+                                        if (cardsOnTable[currTeamPlayerIndex][currTeamPlayerIndex][currHandCardIndex] == 0) {
+                                            window.draw(currentCard.sprite);
+                                        }
                                     }
                                     
                                     // Drag card
@@ -240,7 +264,7 @@ int main()
                                     if (currentCard.sprite.getPosition().x >= rectangle.getPosition().x && currentCard.sprite.getPosition().x + (cardWidth * cardWidthScale) <= rectangle.getPosition().x + rectangleSize.x && currentCard.sprite.getPosition().y >= rectangle.getPosition().y && currentCard.sprite.getPosition().y + (cardWidth * cardWidthScale) <= rectangle.getPosition().y + rectangleSize.y) {
                                         if (currentCard.GetState() != Table) {
                                             currentCard.SetState(Table);
-                                            nextTurn(currentPlayerTurn, currentTeamTurn);
+                                            nextTurn(currentPlayerTurn, currentTeamTurn, currHandCardIndex);
                                         }
                                         break;
                                     }
@@ -310,7 +334,7 @@ int main()
                 Card& currentCard = handCards[currentTeamTurn][currentPlayerTurn][handCardIndex];
                 if (currentCard.GetState() != Table) {
                     currentCard.SetState(Table);
-                    nextTurn(currentPlayerTurn, currentTeamTurn);
+                    nextTurn(currentPlayerTurn, currentTeamTurn, handCardIndex);
                     break;
                 }
             }
