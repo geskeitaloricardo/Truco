@@ -30,18 +30,14 @@ int cardsOnTable[noTeams][membersPerTeam][cardsPerPlayer] = {
         { -1, -1, -1 }
     }
 };
+int currentOrder = 1;
 
 void nextTurn(int &currentPlayerTurn, int &currentTeamTurn, int cardIndex) {
     
     cardsOnTable[currentTeamTurn][currentPlayerTurn][cardIndex] = 0;
+    currentOrder += 1;
     
     if (currentPlayerTurn == 0 && currentTeamTurn == 0) {
-        currentPlayerTurn = 0;
-        currentTeamTurn = 1;
-        return;
-    }
-    
-    if (currentPlayerTurn == 0 && currentTeamTurn == 1) {
         currentPlayerTurn = 1;
         currentTeamTurn = 1;
         return;
@@ -55,17 +51,13 @@ void nextTurn(int &currentPlayerTurn, int &currentTeamTurn, int cardIndex) {
     
     if (currentPlayerTurn == 1 && currentTeamTurn == 0) {
         currentPlayerTurn = 0;
-        currentTeamTurn = 0;
-        for (int i = 0; i < noTeams; i++) {
-            for (int j = 0; j < membersPerTeam; j++) {
-                for (int k = 0; k < cardsPerPlayer; k++) {
-                    if (cardsOnTable[i][j][k] == 0) {
-                        cardsOnTable[i][j][k] = 1;
-                    }
-                }
-            }
-        }
+        currentTeamTurn = 1;
         return;
+    }
+    
+    if (currentPlayerTurn == 0 && currentTeamTurn == 1) {
+        currentPlayerTurn = 0;
+        currentTeamTurn = 0;
     }
 }
 
@@ -106,7 +98,6 @@ int main()
         { Player("You", true), Player("Pedro") },
         { Player("Lucas"), Player("Osvaldo") }
     };
-    
     
     std::shuffle(allCards, allCards + noAllCards, std::default_random_engine(0));
     
@@ -191,6 +182,20 @@ int main()
                 if(event.key.code == sf::Keyboard::Escape)
                     window.close();
         }
+        
+        if (currentOrder > 5) {
+            currentOrder = 1;
+            for (int i = 0; i < noTeams; i++) {
+                for (int j = 0; j < membersPerTeam; j++) {
+                    for (int k = 0; k < cardsPerPlayer; k++) {
+                        if (cardsOnTable[i][j][k] == 0) {
+                            cardsOnTable[i][j][k] = 1;
+                        }
+                    }
+                }
+            }
+            sf::sleep(sf::seconds(1.00f));
+        }
 
         window.clear(sf::Color::Green);
         
@@ -208,6 +213,11 @@ int main()
                 // Loop team members cards
                 for (int currHandCardIndex = 0; currHandCardIndex < cardsPerPlayer; currHandCardIndex++) {
                     Card& currentCard = handCards[currTeamIndex][currTeamPlayerIndex][currHandCardIndex];
+                    
+                    // Cards thrown, don't show anymore
+                    if (cardsOnTable[currTeamIndex][currTeamPlayerIndex][currHandCardIndex] == 1) {
+                        continue;
+                    }
                     
                     switch (currTeamIndex) {
                         case playerTeamIndex: {
@@ -288,7 +298,7 @@ int main()
                                     }
 
                                     // If partner card is on table
-                                    float cardX = (screenWidth / 2) - (cardWidth * cardWidthScale / 2);
+                                    float cardX = (screenWidth / 2) - (cardWidth * cardWidthScale / 2) + (currentOrder * 2);
                                     cardY = (screenHeight / 2) - (cardHeight * cardHeightScale / 2);
                                     currentCard.sprite.setPosition(cardX, cardY);
                                     window.draw(currentCard.sprite);
@@ -314,8 +324,8 @@ int main()
                                         window.draw(opponentBackCardSprite);
                                         break;
                                     }
-                                    
-                                    float cardX = (screenWidth / 2) - (cardWidth * cardWidthScale / 2);
+
+                                    float cardX = (screenWidth / 2) - (cardWidth * cardWidthScale / 2) + (currentOrder * 2);
                                     float cardY = (screenHeight / 2) - (cardHeight * cardHeightScale / 2);
                                     currentCard.sprite.setPosition(cardX, cardY);
                                     window.draw(currentCard.sprite);
