@@ -263,19 +263,31 @@ int main()
                                     text.setString(currentPlayerName);
                                     window.draw(text);
                                     
-                                    if (currentCard.GetState() != Table) {
+                                    if (currentCard.GetState() == Still) {
                                         float cardX = (screenWidth / 2) - (cardWidth * cardWidthScale / 2) * currHandCardIndex;
                                         partnerBackCardSprite.setPosition(cardX, cardY);
                                         window.draw(partnerBackCardSprite);
-                                        break;
+                                    }
+                                    
+                                    if (currentCard.GetState() == Selected) {
+                                        float currentCardYPos = currentCard.sprite.getPosition().y;
+                                        float fixedCardXPos = (screenWidth / 2) - (cardWidth * cardWidthScale / 2) * currHandCardIndex;
+                                        currentCard.sprite.setPosition(fixedCardXPos, currentCardYPos + (throwSpeed * moveTime.asSeconds()));
+                                        
+                                        if (currentCardYPos >= (screenHeight / 2) - (cardHeight * cardHeightScale / 2)) {
+                                            currentCard.SetState(Table);
+                                            nextTurn(currentPlayerTurn, currentTeamTurn, randCardIndex);
+                                        }
+                                        
+                                        window.draw(currentCard.sprite);
                                     }
 
-                                    // If partner card is on table
-                                    float cardX = (screenWidth / 2) - (cardWidth * cardWidthScale / 2) + (currentTurn * 2);
-                                    cardY = (screenHeight / 2) - (cardHeight * cardHeightScale / 2);
-                                    currentCard.sprite.setPosition(cardX, cardY);
-                                    window.draw(currentCard.sprite);
-                                    break;
+                                    if (currentCard.GetState() == Table) {
+                                        float cardX = (screenWidth / 2) - (cardWidth * cardWidthScale / 2) + (currentTurn * 2);
+                                        cardY = (screenHeight / 2) - (cardHeight * cardHeightScale / 2);
+                                        currentCard.sprite.setPosition(cardX, cardY);
+                                        window.draw(currentCard.sprite);
+                                    }
                                 }
                             }
                             break;
@@ -283,12 +295,21 @@ int main()
                         case rivalTeamIndex: {
                             switch (currTeamPlayerIndex) {
                                 case rightSideRivalIndex:
+//                                    TODO: 次はここ
                                 case leftSideRivalIndex: {
                                     float textX = currTeamPlayerIndex == 0 ? screenWidth - (cardHeight * cardHeightScale) : cardHeight * cardHeightScale / 2;
                                     float textY = currTeamPlayerIndex == 0 ? (screenHeight / 2) - (cardWidth * cardWidthScale) - fontSize : (screenHeight / 2) + (cardWidth * cardWidthScale);
                                     text.setPosition(textX, textY);
                                     text.setString(currentPlayerName);
                                     window.draw(text);
+                                    
+                                    if (currentCard.GetState() == Still) {
+                                        float cardX = currTeamPlayerIndex == 0 ? screenWidth - (cardHeight * cardHeightScale) : 0;
+                                        float cardY = ((screenHeight / 2) - (cardWidth * cardWidthScale / 2) * currHandCardIndex) + 360.f;
+                                        opponentBackCardSprite.setPosition(cardX, cardY);
+                                        opponentBackCardSprite.setRotation(-90.f);
+                                        window.draw(opponentBackCardSprite);
+                                    }
                                     
                                     if (currentCard.GetState() == Selected) {
                                         float currentCardXPos = currentCard.sprite.getPosition().x;
@@ -297,6 +318,7 @@ int main()
                                         
                                         if (currentCardXPos >= (screenWidth / 2) - (cardWidth * cardWidthScale / 2)) {
                                             currentCard.SetState(Table);
+                                            nextTurn(currentPlayerTurn, currentTeamTurn, randCardIndex);
                                         }
                                         
                                         window.draw(currentCard.sprite);
@@ -307,14 +329,6 @@ int main()
                                         float cardY = (screenHeight / 2) - (cardHeight * cardHeightScale / 2);
                                         currentCard.sprite.setPosition(cardX, cardY);
                                         window.draw(currentCard.sprite);
-                                    }
-                                    
-                                    if (currentCard.GetState() != Table) {
-                                        float cardX = currTeamPlayerIndex == 0 ? screenWidth - (cardHeight * cardHeightScale) : 0;
-                                        float cardY = ((screenHeight / 2) - (cardWidth * cardWidthScale / 2) * currHandCardIndex) + 360.f;
-                                        opponentBackCardSprite.setPosition(cardX, cardY);
-                                        opponentBackCardSprite.setRotation(-90.f);
-                                        window.draw(opponentBackCardSprite);
                                     }
                                 }
                             }
@@ -335,7 +349,14 @@ int main()
             }
             
             if (!hasSelectedCard) {
-                int randCardIndex = 1;
+                int randCardIndex = rand() % cardsPerPlayer;
+                bool isThrowableCard = false;
+                while (!isThrowableCard) {
+                    // TODO: 改善
+                    if (handCards[currentTeamTurn][currentPlayerTurn][randCardIndex].GetState() == Still) {
+                        isThrowableCard = true;
+                    }
+                }
                 Card& currentCard = handCards[currentTeamTurn][currentPlayerTurn][randCardIndex];
                 currentCard.SetState(Selected);
 //                nextTurn(currentPlayerTurn, currentTeamTurn, randCardIndex);

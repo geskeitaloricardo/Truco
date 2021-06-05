@@ -21,6 +21,7 @@ Card::Card(int number, Suit suit, std::string sourceDirectory) {
     this->number = number;
     this->suit = suit;
     this->sourceDirectory = sourceDirectory;
+    this->state = State::Still;
 }
 
 int Card::GetNumber() {
