@@ -25,7 +25,8 @@ enum State
     Still,
     Unselected,
     Selected,
-    Table
+    Table,
+    Gone
 };
 
 class Card
